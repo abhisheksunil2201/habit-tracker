@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Teko:wght@700&display=swap");
+
+.pomodoro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  background-color: #294261;
+  width: 50%;
+  margin: 2rem auto;
+  border-radius: 30px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+.pomodoro__time {
+  font-family: "Teko", sans-serif;
+  font-size: 6rem;
+  color: #d2d7dd;
+}
+.pomodoro__startBtn {
+  margin-top: 1rem;
+  padding: 1rem;
+  width: auto;
+  height: 4rem;
+  font-size: 1.5rem;
+  color: white;
+  font-weight: 600;
+  background-color: #ff6683;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.pomodoro__secondaryButton {
+  font-size: 1rem;
+  padding: 0.125rem 0.75rem;
+  height: 1.75rem;
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  transition: transform 0.1s ease-in-out;
+  cursor: pointer;
+}
+.pomodoro__secondaryButtonActive {
+  background-color: rgba(0, 0, 0, 0.15);
+  transform: translateY(0.125rem);
+}
+.pomodoro__modes {
+  display: flex;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: fit-content;
+}
+.pomodoro__controls {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.pomodoro__nextButton {
+  width: calc(100% - 200px);
+  visibility: hidden;
+  position: absolute;
+  right: 0px;
+  bottom: -6px;
+  height: 80px;
+  background-color: transparent;
+  color: white;
+}
+.pomodoro__nextButtonIcon {
+  font-size: 3rem !important;
+  cursor: pointer;
+}
+.pomodoro__showNextButton {
+  visibility: visible;
+}
+.pomodoro__progress {
+  width: 100%;
+  margin-bottom: 3rem;
+}
+@media screen and (max-width: 600px) {
+  .pomodoro {
+    width: 70%;
+  }
+}

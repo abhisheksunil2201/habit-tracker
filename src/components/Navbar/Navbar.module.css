@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap&text=Habitica");
+.navbar {
+  background-color: black;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+}
+.navbar__left,
+.navbar__right {
+  display: flex;
+  color: white;
+  align-items: center;
+  user-select: none;
+}
+.navbar__logoImg {
+  width: 40px;
+  height: 40px;
+}
+.navbar__logoTitle {
+  font-size: 2rem;
+  font-family: "Mountains of Christmas", cursive;
+}
+.navbar__gold {
+  display: flex;
+  font-size: 1.3rem;
+  align-items: center;
+  color: #ffd700;
+}
+.navbar__goldIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+.navbar__userIcon {
+  cursor: pointer !important;
+  font-size: 2rem !important;
+  margin-left: 1rem;
+}
