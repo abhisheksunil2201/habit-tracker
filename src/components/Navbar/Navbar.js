@@ -5,11 +5,14 @@ import coinIcon from "../../assets/coin.svg";
 import { PersonOutlined } from "@mui/icons-material";
 import logo from "../../assets/unicorn.png";
 import { Tooltip } from "../utils/tooltip";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.navbar}>
-      <div className={styles.navbar__left}>
+      <div className={styles.navbar__left} onClick={() => navigate("/")}>
         <img
           className={styles.navbar__logoImg}
           // src="https://habitica.com/static/img/melior@3x.fe3b187f.png"

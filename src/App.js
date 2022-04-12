@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Home } from "./components/Home/Home";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Pomodoro } from "./components/Pomodoro/Pomodoro";
+import { Home } from "./pages/Home/Home";
 
 function App() {
   return (

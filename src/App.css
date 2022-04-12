@@ -7,6 +7,19 @@
     #fe9a8b 100%
   ); */
   background-image: linear-gradient(to top, #37ecba 0%, #72afd3 100%);
-  width: 100vw;
-  height: 100vh;
+  height: 100%;
+}
+
+.lightFont {
+  font-weight: 200;
+}
+
+::-moz-selection {
+  color: #37ecba;
+  background: #e27d60;
+}
+
+::selection {
+  color: #37ecba;
+  background: #e27d60;
 }
