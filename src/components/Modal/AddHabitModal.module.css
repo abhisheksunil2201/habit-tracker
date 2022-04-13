@@ -1,0 +1,39 @@
+.addHabitModal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400;
+  background-color: #294261;
+  padding: 4rem;
+  color: white;
+  border-radius: 5px;
+}
+.addHabitModal__heading {
+  font-size: 3rem;
+  font-weight: 200;
+  margin-bottom: 1rem;
+}
+.addHabitModal__input {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: gray;
+  font-size: 1.5rem;
+}
+.addHabitModal__button {
+  padding: 1rem;
+  margin: 1.5rem;
+  align-self: center;
+  width: auto;
+  height: 3.5rem;
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 600;
+  background-color: #ff6683;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -1,20 +1,18 @@
+.habits {
+  position: relative;
+  height: 100%;
+}
 .habitHeading {
   font-size: 3rem;
   font-weight: 200;
 }
 .habitContainer {
   background-color: #294261;
-  margin: 1rem;
+  margin: 1rem 0;
   padding: 2rem;
   border-radius: 5px;
   height: 80%;
 }
-
-.habits {
-  position: relative;
-  height: 100%;
-}
-
 .addHabitBtn {
   display: flex;
   align-items: center;
@@ -40,4 +38,12 @@
   font-size: 18px;
   font-weight: 300;
   margin-top: 1rem;
+}
+
+.habit__info {
+  font-size: 28px;
+  font-weight: 200;
+  color: gray;
+  text-align: center;
+  margin-top: 50%;
 }

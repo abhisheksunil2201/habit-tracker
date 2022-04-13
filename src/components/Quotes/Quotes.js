@@ -5,7 +5,7 @@ export const Quotes = () => {
   const [numberFromDate, setNumberFromDate] = useState(0);
   const quotes = [
     {
-      quote: "“The bad news is time flies. The good news is you’re the pilot.",
+      quote: "“The bad news is time flies. The good news is you’re the pilot.“",
       quotedBy: "Michael Altshuler",
     },
     {
@@ -16,7 +16,7 @@ export const Quotes = () => {
     {
       quote:
         "“Success is not final, failure is not fatal: it is the courage to continue that counts.”",
-      quotedBy: " Winston Churchill",
+      quotedBy: "Winston Churchill",
     },
     {
       quote:
@@ -48,7 +48,7 @@ export const Quotes = () => {
     "https://cdn.pixabay.com/photo/2015/01/28/23/34/mountains-615428_1280.jpg",
   ];
   useEffect(() => {
-    setNumberFromDate(new Date().getDate() / 6);
+    setNumberFromDate(Math.floor(new Date().getDate() / 6));
   }, []);
   return (
     <div
@@ -57,8 +57,8 @@ export const Quotes = () => {
         backgroundImage: `url(${images[numberFromDate]})`,
       }}
     >
-      <p className={styles.quote}>{quotes[5].quote}</p>
-      <p className={styles.quotedBy}>{quotes[numberFromDate].quotedBy}</p>
+      <p className={styles.quote}>{quotes[numberFromDate]?.quote}</p>
+      <p className={styles.quotedBy}>{quotes[numberFromDate]?.quotedBy}</p>
     </div>
   );
 };
