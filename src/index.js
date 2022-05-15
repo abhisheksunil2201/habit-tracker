@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App";
 import { TimerProvider } from "./contexts/timerContext";
 import { BrowserRouter } from "react-router-dom";
+import { DataProvider } from "./contexts/dataContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <TimerProvider>
-        <App />
+        <DataProvider>
+          <App />
+        </DataProvider>
       </TimerProvider>
     </BrowserRouter>
   </React.StrictMode>,

@@ -23,3 +23,10 @@
   color: #37ecba;
   background: #e27d60;
 }
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  border-radius: 20px;
+  background-color: darkgrey;
+}

@@ -6,9 +6,11 @@ import { PersonOutlined } from "@mui/icons-material";
 import logo from "../../assets/unicorn.png";
 import { Tooltip } from "../utils/tooltip";
 import { useNavigate } from "react-router-dom";
+import { useData } from "../../contexts/dataContext";
 
 export const Navbar = () => {
   const navigate = useNavigate();
+  const { coins } = useData();
 
   return (
     <div className={styles.navbar}>
@@ -30,7 +32,7 @@ export const Navbar = () => {
               alt="gold"
             />
           </Tooltip>
-          <p>9999</p>
+          <p>{coins}</p>
         </div>
         <Tooltip TransitionComponent={Zoom} title="User">
           <PersonOutlined className={styles.navbar__userIcon} />
