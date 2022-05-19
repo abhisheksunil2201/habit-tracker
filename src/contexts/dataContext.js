@@ -1,13 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore/lite";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import { useAuth } from "./userContext";
 
-const defaultValues = {
-  coins: 0,
-  quotes: [],
-};
-
-const DataContext = createContext(defaultValues);
 const quotesDefault = [
   {
     quote: "“The bad news is time flies. The good news is you’re the pilot.“",
@@ -45,9 +40,17 @@ const quotesDefault = [
   },
 ];
 
+const defaultValues = {
+  coins: 0,
+  quotes: quotesDefault,
+};
+
+const DataContext = createContext(defaultValues);
+
 const DataProvider = ({ children }) => {
   const [coins, setCoins] = useState(0);
   const [quotes, setQuotes] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     async function getQuotes() {
@@ -56,10 +59,18 @@ const DataProvider = ({ children }) => {
       const quotesList = quotesSnapshot.docs.map((doc) => doc.data());
       return quotesList;
     }
-    //getQuotes().then((data) => setQuotes(data));
-    setQuotes(quotesDefault);
-    setCoins(9899);
-  }, []);
+    getQuotes().then((data) => setQuotes(data));
+    async function getCoins() {
+      const coinsCol = collection(db, "coins");
+      const coinsSnapshot = await getDocs(coinsCol);
+      const coins = coinsSnapshot.docs.filter(
+        (doc) => doc.id === user?.user.uid
+      );
+      if (coins.length) return coins[0].data().coins;
+      return 0;
+    }
+    getCoins().then((data) => setCoins(data));
+  }, [user]);
 
   return (
     <DataContext.Provider value={{ ...defaultValues, coins, quotes }}>

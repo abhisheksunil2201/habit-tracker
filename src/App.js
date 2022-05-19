@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Pomodoro } from "./components/Pomodoro/Pomodoro";
@@ -6,9 +6,10 @@ import { Home } from "./pages/Home/Home";
 import { Login } from "./pages/Login/Login";
 
 function App() {
+  const location = useLocation();
   return (
     <div className="App">
-      <Navbar />
+      {location.pathname !== "/login" && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
