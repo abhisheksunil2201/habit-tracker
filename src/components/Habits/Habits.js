@@ -4,18 +4,34 @@ import { Tooltip, Zoom } from "@mui/material";
 import addButton from "../../assets/add-button.svg";
 import { AddHabitModal } from "../Modal/AddHabitModal";
 import { v4 as uuid } from "uuid";
+import { useAuth } from "../../contexts/userContext";
+import { useNavigate } from "react-router-dom";
 
 export const Habits = () => {
   const [habits, setHabits] = useState([]);
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAddHabit = () => {
+    if (user) {
+      setOpen(true);
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <div className={styles.habits}>
-      <Tooltip TransitionComponent={Zoom} title="Add habit">
+      <Tooltip
+        TransitionComponent={Zoom}
+        title={user ? "Add habit" : "Login to add habit"}
+      >
         <img
           className={styles.addHabitBtn}
           src={addButton}
           alt="addHabit"
-          onClick={() => setOpen(true)}
+          onClick={() => handleAddHabit()}
         />
       </Tooltip>
       <div className={styles.habitContainer}>

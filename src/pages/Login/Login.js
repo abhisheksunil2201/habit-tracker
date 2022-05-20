@@ -10,11 +10,9 @@ export const Login = () => {
   const provider = new GoogleAuthProvider();
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
-  console.log(user);
-
   useEffect(() => {
     user && navigate("/");
-  });
+  }, [user, navigate]);
 
   const loginHandler = () => {
     signInWithPopup(auth, provider)
@@ -90,7 +88,7 @@ export const Login = () => {
         className={styles.habiticaLogo}
         src={logo}
         alt="habitica"
-        onClick={loginHandler}
+        onClick={() => navigate("/")}
       />
       {habiticaSvg}
       <button className={styles.login__button} onClick={loginHandler}>
