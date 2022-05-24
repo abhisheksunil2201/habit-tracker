@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "./userContext";
 
@@ -50,6 +50,7 @@ const DataContext = createContext(defaultValues);
 const DataProvider = ({ children }) => {
   const [coins, setCoins] = useState(0);
   const [quotes, setQuotes] = useState([]);
+  const [habits, setHabits] = useState([]);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -60,6 +61,7 @@ const DataProvider = ({ children }) => {
       return quotesList;
     }
     getQuotes().then((data) => setQuotes(data));
+
     async function getCoins() {
       const coinsCol = collection(db, "coins");
       const coinsSnapshot = await getDocs(coinsCol);
@@ -70,10 +72,42 @@ const DataProvider = ({ children }) => {
       return 0;
     }
     getCoins().then((data) => setCoins(data));
+
+    async function getHabits() {
+      // await setDoc(doc(db, "habits", user?.user.uid), {
+      //   habits: [
+      //     {
+      //       habit: "Cook",
+      //       startDate: "2022-05-23T09:44:07.494Z",
+      //       endDate: "2022-05-23T09:44:07.494Z",
+      //       goal: 22,
+      //       frequency: "daily",
+      //     },
+      //     {
+      //       habit: "clean",
+      //       startDate: "2022-05-23T09:44:15.447Z",
+      //       endDate: "2022-05-23T09:44:15.447Z",
+      //       goal: 1,
+      //       frequency: "daily",
+      //     },
+      //   ],
+      // });
+      const habitsCol = collection(db, "habits");
+      const habitsSnapshot = await getDocs(habitsCol);
+      const habits = habitsSnapshot.docs.filter(
+        (doc) => doc.id === user?.user.uid
+      );
+      console.log("Habits from db are", habits[0]?.data().habits);
+      if (habits.length) return habits[0].data().habits;
+      return [];
+    }
+    getHabits().then((data) => setHabits(data));
   }, [user]);
 
   return (
-    <DataContext.Provider value={{ ...defaultValues, coins, quotes }}>
+    <DataContext.Provider
+      value={{ ...defaultValues, coins, quotes, habits, setHabits }}
+    >
       {children}
     </DataContext.Provider>
   );

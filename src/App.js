@@ -1,9 +1,10 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import { Navbar } from "./components/Navbar/Navbar";
-import { Pomodoro } from "./components/Pomodoro/Pomodoro";
+import { Pomodoro } from "./pages/Pomodoro/Pomodoro";
 import { Home } from "./pages/Home/Home";
 import { Login } from "./pages/Login/Login";
+import { Habits } from "./pages/Habits/Habits";
 
 function App() {
   const location = useLocation();
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/pomodoro" element={<Pomodoro />} />
+        <Route path="/habits" element={<Habits />} />
       </Routes>
     </div>
   );

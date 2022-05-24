@@ -5,6 +5,7 @@
 .habitHeading {
   font-size: 3rem;
   font-weight: 200;
+  cursor: pointer;
 }
 .habitContainer {
   background-color: #294261;
@@ -34,16 +35,31 @@
   border-radius: 5px;
 }
 
-.habit {
-  font-size: 18px;
-  font-weight: 300;
-  margin-top: 1rem;
-}
-
 .habit__info {
   font-size: 28px;
   font-weight: 200;
   color: gray;
   text-align: center;
   margin-top: 50%;
+}
+
+.singleHabit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  margin-bottom: 1rem;
+  background-color: lightcoral;
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+
+.singleHabit__name {
+  font-size: 1.6rem;
+  font-weight: 200;
+}
+
+.singleHabit__frequency {
+  font-size: 1.2rem;
+  font-weight: 400;
 }

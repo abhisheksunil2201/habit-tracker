@@ -6,15 +6,26 @@ import styles from "./AddHabitModal.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { InputLabel, MenuItem, Select } from "@mui/material";
+import { addDays } from "date-fns";
 
 export const AddHabitModal = ({ open, setOpen, habits, setHabits }) => {
   const [habit, setHabit] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [goal, setGoal] = useState(1);
-  const handleClose = () => setOpen(false);
+  const [frequency, setFrequency] = useState("daily");
+
+  const handleClose = () => {
+    setHabit("");
+    setStartDate(new Date());
+    setEndDate(new Date());
+    setGoal(1);
+    setFrequency("daily");
+    setOpen(false);
+  };
   const handleAddHabit = () => {
-    setHabits([...habits, habit]);
+    const newHabit = { habit, startDate, endDate, goal, frequency };
+    setHabits([...habits, newHabit]);
     handleClose();
   };
 
@@ -32,10 +43,17 @@ export const AddHabitModal = ({ open, setOpen, habits, setHabits }) => {
     </div>
   ));
 
-  const SelectCustomInput = ({ labelId, inputId, value, onChange }) => (
+  const SelectCustomInput = ({
+    label,
+    labelId,
+    inputId,
+    value,
+    onChange,
+    menuItems,
+  }) => (
     <>
       <InputLabel
-        id="goal-select-label"
+        id={labelId}
         style={{
           color: "white",
           fontWeight: "200",
@@ -43,23 +61,26 @@ export const AddHabitModal = ({ open, setOpen, habits, setHabits }) => {
           marginTop: "1rem",
         }}
       >
-        Goal
+        {label}
       </InputLabel>
       <Select
-        labelId="goal-select-label"
-        id="goal-select"
+        labelId={labelId}
+        id={inputId}
         style={{
           color: "gray",
           border: "1px solid black",
           background: "black",
           textAlign: "center",
         }}
-        value={goal}
+        value={value}
         label="Age"
-        onChange={() => setGoal(goal)}
+        onChange={onChange}
       >
-        <MenuItem value={1}>1 times</MenuItem>
-        <MenuItem value={2}>2 times</MenuItem>
+        {menuItems.map((item) => (
+          <MenuItem key={item.value} value={item.value}>
+            {item.title}
+          </MenuItem>
+        ))}
       </Select>
     </>
   );
@@ -88,15 +109,44 @@ export const AddHabitModal = ({ open, setOpen, habits, setHabits }) => {
           />
           <DatePicker
             selected={startDate}
+            dateFormat="dd/MM/yyyy"
             onChange={(date) => setStartDate(date)}
+            placeholder="Start Date"
+            minDate={new Date()}
             customInput={<DateCustomInput />}
             title="Start Date"
           />
           <DatePicker
             selected={endDate}
+            dateFormat="dd/MM/yyyy"
             onChange={(date) => setEndDate(date)}
+            placeholder="End Date"
+            minDate={addDays(startDate, 1)}
             customInput={<DateCustomInput />}
             title="End Date"
+          />
+          <SelectCustomInput
+            label="Goal"
+            labelId="goal-select-label"
+            inputId="goal-select"
+            value={goal}
+            onChange={(e) => setGoal(e.target.value)}
+            menuItems={[
+              { value: 1, title: "1 time" },
+              { value: 2, title: "2 times" },
+            ]}
+          />
+          <SelectCustomInput
+            label="Repeat"
+            labelId="frequency-select-label"
+            inputId="frequency-select"
+            value={frequency}
+            onChange={(e) => setFrequency(e.target.value)}
+            menuItems={[
+              { value: "daily", title: "Daily" },
+              { value: "weekly", title: "Weekly" },
+              { value: "monthly", title: "Monthly" },
+            ]}
           />
 
           <button
