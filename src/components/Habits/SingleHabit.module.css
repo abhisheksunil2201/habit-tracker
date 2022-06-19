@@ -1,0 +1,32 @@
+.singleHabit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  margin: 1rem;
+  border-radius: 1rem;
+  background-color: #1e94ac;
+  position: relative;
+  color: white;
+  border: 2px solid white;
+}
+.singleHabit__subContainer {
+  display: flex;
+  flex-direction: column;
+  font-weight: 1.2rem;
+  margin: 0.5rem;
+  color: lightgray;
+}
+.singleHabit__delete {
+  position: absolute;
+  right: 1rem;
+}
+.singleHabit__deleteIcon {
+  cursor: pointer !important;
+  font-size: 2.5rem !important;
+  margin-left: 1rem;
+}
+.singleHabit__name {
+  font-size: 1.5rem;
+  margin: 0.5rem;
+}

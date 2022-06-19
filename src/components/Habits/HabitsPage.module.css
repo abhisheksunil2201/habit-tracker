@@ -1,27 +1,42 @@
 .habitsPage {
   display: flex;
+  flex-direction: column;
   width: 100%;
 }
-.sidebar {
-  flex: 0.3;
-  padding: 2rem 0 0 2rem;
+.topBar {
+  display: flex;
+  border-bottom: 3px solid white;
+  position: sticky;
+  z-index: 2;
+  top: 4.7rem;
+  background-color: black;
 }
 .mainHabits {
-  flex: 0.7;
-  padding: 2rem 2rem 0 0;
+  padding: 2rem;
+  height: 65vh;
+  overflow-y: scroll;
 }
-.sidebar__habits {
+.topBar__habits {
+  flex: 0.5;
   padding: 1rem;
   font-size: 1.5rem;
   font-weight: 400;
   cursor: pointer;
-  margin: 1rem 0;
+  margin: 1rem;
   border-radius: 1rem;
   transition: all 0.2s ease;
   border: 2px solid transparent;
-}
-.sidebar__habits:hover {
+  background-color: black;
   color: white;
+  border: 1px solid white;
+}
+.topBar__habits:hover,
+.topBar__habitActive {
   background-color: lightcoral;
-  border: 2px solid white;
+}
+.NoHabitsFound {
+  color: white;
+  font-weight: 200;
+  font-size: 5rem;
+  text-align: center;
 }

@@ -1,20 +1,19 @@
 import React, { useState } from "react";
 import styles from "./Habits.module.css";
 import { Tooltip, Zoom } from "@mui/material";
-import addButton from "../../assets/add-button.svg";
-import { AddHabitModal } from "../Modal/AddHabitModal";
+import addButton from "../../../assets/add-button.svg";
+import { AddHabitModal } from "../../Modal/AddHabitModal";
 import { v4 as uuid } from "uuid";
-import { useAuth } from "../../contexts/userContext";
+import { useAuth } from "../../../contexts/userContext";
 import { useNavigate } from "react-router-dom";
-import { Check } from "@mui/icons-material";
+import { useData } from "../../../contexts/dataContext";
+import { SingleHabit } from "./SingleHabit";
 
 export const Habits = () => {
-  const [habits, setHabits] = useState([]);
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
-
-  console.log("Habits are", habits);
+  const { habits, addHabit } = useData();
 
   const handleAddHabit = () => {
     if (user) {
@@ -23,18 +22,6 @@ export const Habits = () => {
       navigate("/login");
     }
   };
-
-  const handleHabitComplete = () => {
-    console.log("Habit done once");
-  };
-
-  const SingleHabit = ({ habit }) => (
-    <div className={styles.singleHabit}>
-      <p className={styles.singleHabit__name}>{habit.habit}</p>
-      <p className={styles.singleHabit__frequency}>0/2 times today</p>
-      <Check style={{ cursor: "pointer" }} onClick={handleHabitComplete} />
-    </div>
-  );
 
   return (
     <div className={styles.habits}>
@@ -70,7 +57,7 @@ export const Habits = () => {
         open={open}
         setOpen={setOpen}
         habits={habits}
-        setHabits={setHabits}
+        addHabit={addHabit}
       />
     </div>
   );

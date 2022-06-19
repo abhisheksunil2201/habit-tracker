@@ -1,5 +1,5 @@
 import React from "react";
-import { Habits } from "../../components/Habits/Habits";
+import { Habits } from "../../components/Habits/HabitHomePage/Habits";
 import { Quotes } from "../../components/Quotes/Quotes";
 import styles from "./Home.module.css";
 import googleFitIcon from "../../assets/google-fit.svg";

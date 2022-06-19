@@ -1,44 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "./userContext";
-
-const quotesDefault = [
-  {
-    quote: "“The bad news is time flies. The good news is you’re the pilot.“",
-    quotedBy: "Michael Altshuler",
-  },
-  {
-    quote:
-      "“Life has got all those twists and turns. You’ve got to hold on tight and off you go.”",
-    quotedBy: "Nicole Kidman",
-  },
-  {
-    quote:
-      "“Success is not final, failure is not fatal: it is the courage to continue that counts.”",
-    quotedBy: "Winston Churchill",
-  },
-  {
-    quote:
-      "“You are never too old to set another goal or to dream a new dream.”",
-    quotedBy: "Malala Yousafzai",
-  },
-  {
-    quote:
-      "“You can be everything. You can be the infinite amount of things that people are.”",
-    quotedBy: "Kesha",
-  },
-  {
-    quote:
-      "“What lies behind you and what lies in front of you, pales in comparison to what lies inside of you.”",
-    quotedBy: "Ralph Waldo Emerson",
-  },
-  {
-    quote:
-      "“It is during our darkest moments that we must focus to see the light.”",
-    quotedBy: "Aristotle",
-  },
-];
+import { quotesDefault } from "../constants";
+import { v4 as uuid } from "uuid";
 
 const defaultValues = {
   coins: 0,
@@ -51,6 +16,7 @@ const DataProvider = ({ children }) => {
   const [coins, setCoins] = useState(0);
   const [quotes, setQuotes] = useState([]);
   const [habits, setHabits] = useState([]);
+  const [completedHabits, setCompletedHabits] = useState([]);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -61,52 +27,133 @@ const DataProvider = ({ children }) => {
       return quotesList;
     }
     getQuotes().then((data) => setQuotes(data));
+  }, []);
 
+  useEffect(() => {
     async function getCoins() {
-      const coinsCol = collection(db, "coins");
-      const coinsSnapshot = await getDocs(coinsCol);
-      const coins = coinsSnapshot.docs.filter(
-        (doc) => doc.id === user?.user.uid
-      );
-      if (coins.length) return coins[0].data().coins;
+      try {
+        const coinsCol = doc(db, `coins/${user?.user.uid}`);
+        const coins = await (await getDoc(coinsCol)).data();
+        return coins.coins;
+      } catch (error) {
+        console.log(error);
+      }
       return 0;
     }
-    getCoins().then((data) => setCoins(data));
-
-    async function getHabits() {
-      // await setDoc(doc(db, "habits", user?.user.uid), {
-      //   habits: [
-      //     {
-      //       habit: "Cook",
-      //       startDate: "2022-05-23T09:44:07.494Z",
-      //       endDate: "2022-05-23T09:44:07.494Z",
-      //       goal: 22,
-      //       frequency: "daily",
-      //     },
-      //     {
-      //       habit: "clean",
-      //       startDate: "2022-05-23T09:44:15.447Z",
-      //       endDate: "2022-05-23T09:44:15.447Z",
-      //       goal: 1,
-      //       frequency: "daily",
-      //     },
-      //   ],
-      // });
-      const habitsCol = collection(db, "habits");
-      const habitsSnapshot = await getDocs(habitsCol);
-      const habits = habitsSnapshot.docs.filter(
-        (doc) => doc.id === user?.user.uid
-      );
-      console.log("Habits from db are", habits[0]?.data().habits);
-      if (habits.length) return habits[0].data().habits;
-      return [];
-    }
-    getHabits().then((data) => setHabits(data));
+    user?.user.uid && getCoins().then((data) => setCoins(data));
   }, [user]);
+
+  const getHabits = async () => {
+    const habitsCol = doc(db, `habits/${user?.user.uid}`);
+    const habits = (await getDoc(habitsCol)).data();
+    if (habits?.habits.length) setHabits(habits.habits);
+    return [];
+  };
+
+  const getCompletedHabits = async () => {
+    const habitsCol = doc(db, `completedHabits/${user?.user.uid}`);
+    const habits = (await getDoc(habitsCol)).data();
+    if (habits?.habits.length) setCompletedHabits(habits.habits);
+    return [];
+  };
+
+  useEffect(() => {
+    getHabits();
+    getCompletedHabits();
+  }, [user]);
+
+  const addHabit = async ({ habit, startDate, endDate, goal, frequency }) => {
+    await setDoc(doc(db, "habits", user?.user.uid), {
+      habits: [
+        ...habits,
+        {
+          id: uuid(),
+          habit,
+          startDate,
+          endDate,
+          goal,
+          frequency,
+        },
+      ],
+    });
+    getHabits();
+  };
+
+  const habitCompletedOnce = async (id, currentProgress) => {
+    console.log(id, currentProgress);
+    await setDoc(
+      doc(
+        db,
+        `habitProgress/${user?.user.uid}/${new Date(
+          new Date().setHours(0, 0, 0, 0)
+        ).getTime()}/${id}`
+      ),
+      {
+        progress: currentProgress + 1,
+      }
+    );
+  };
+
+  const getTodayProgress = async (id) => {
+    const todayProgress = doc(
+      db,
+      `habitProgress/${user?.user.uid}/${new Date(
+        new Date().setHours(0, 0, 0, 0)
+      ).getTime()}/${id}`
+    );
+    const progress = (await getDoc(todayProgress)).data();
+    return progress?.progress;
+  };
+
+  const deleteHabit = async (habitToBeDeleted) => {
+    await setDoc(doc(db, "habits", user?.user.uid), {
+      habits: habits.filter((habit) => habit.id !== habitToBeDeleted.id),
+    });
+    addToCompletedHabits(habitToBeDeleted);
+    getHabits();
+    getCompletedHabits();
+  };
+
+  const addToCompletedHabits = async ({
+    id,
+    habit,
+    startDate,
+    endDate,
+    goal,
+    frequency,
+  }) => {
+    await setDoc(doc(db, "completedHabits", user?.user.uid), {
+      habits: [
+        ...completedHabits,
+        {
+          id,
+          habit,
+          startDate,
+          endDate,
+          goal,
+          frequency,
+        },
+      ],
+    });
+    await getHabits();
+    await getCompletedHabits();
+  };
 
   return (
     <DataContext.Provider
-      value={{ ...defaultValues, coins, quotes, habits, setHabits }}
+      value={{
+        ...defaultValues,
+        coins,
+        quotes,
+        habits,
+        setHabits,
+        completedHabits,
+        setCompletedHabits,
+        addHabit,
+        deleteHabit,
+        habitCompletedOnce,
+        getTodayProgress,
+      }}
     >
       {children}
     </DataContext.Provider>

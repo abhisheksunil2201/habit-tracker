@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { InputLabel, MenuItem, Select } from "@mui/material";
 import { addDays } from "date-fns";
 
-export const AddHabitModal = ({ open, setOpen, habits, setHabits }) => {
+export const AddHabitModal = ({ open, setOpen, habits, addHabit }) => {
   const [habit, setHabit] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -25,7 +25,7 @@ export const AddHabitModal = ({ open, setOpen, habits, setHabits }) => {
   };
   const handleAddHabit = () => {
     const newHabit = { habit, startDate, endDate, goal, frequency };
-    setHabits([...habits, newHabit]);
+    addHabit(newHabit);
     handleClose();
   };
 

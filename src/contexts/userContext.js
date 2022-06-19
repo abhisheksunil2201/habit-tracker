@@ -11,6 +11,7 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.getItem("user") &&
+      !user &&
       setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
