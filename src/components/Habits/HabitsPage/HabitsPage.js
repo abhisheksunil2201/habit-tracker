@@ -1,11 +1,19 @@
-import React, { useState } from "react";
-import { useData } from "../../contexts/dataContext";
+import React, { useEffect, useState } from "react";
+import { useData } from "../../../contexts/dataContext";
 import styles from "./HabitsPage.module.css";
 import { SingleHabit } from "./SingleHabit";
 
 export const HabitsPage = () => {
-  const { habits, completedHabits } = useData();
+  const { habits, deletedHabits } = useData();
   const [activeTab, setActiveTab] = useState("active");
+  const [activeHabits, setActiveHabits] = useState([]);
+  const [completedHabits, setCompletedHabits] = useState([]);
+
+  useEffect(() => {
+    console.log(habits);
+    setActiveHabits(habits.filter((habit) => habit.progress !== habit.goal));
+    setCompletedHabits(habits.filter((habit) => habit.progress === habit.goal));
+  }, []);
 
   const NoHabitsFound = () => (
     <p className={styles.NoHabitsFound}>No habits found</p>
@@ -32,10 +40,21 @@ export const HabitsPage = () => {
         >
           Completed Habits
         </p>
+        <p
+          className={[
+            styles.topBar__habits,
+            activeTab === "deleted" ? styles.topBar__habitActive : "",
+          ].join(" ")}
+          onClick={() => setActiveTab("deleted")}
+        >
+          Deleted Habits
+        </p>
       </div>
       <div className={styles.mainHabits}>
-        {activeTab === "active" && habits.length > 0 ? (
-          habits?.map((habit) => <SingleHabit key={habit.id} habit={habit} />)
+        {activeTab === "active" && activeHabits.length > 0 ? (
+          activeHabits?.map((habit) => (
+            <SingleHabit key={habit.id} habit={habit} type="active" />
+          ))
         ) : activeTab === "active" ? (
           <NoHabitsFound />
         ) : null}
@@ -44,6 +63,13 @@ export const HabitsPage = () => {
             <SingleHabit key={habit.id} habit={habit} type="completed" />
           ))
         ) : activeTab === "completed" ? (
+          <NoHabitsFound />
+        ) : null}
+        {activeTab === "deleted" && deletedHabits.length > 0 ? (
+          deletedHabits?.map((habit) => (
+            <SingleHabit key={habit.id} habit={habit} type="deleted" />
+          ))
+        ) : activeTab === "deleted" ? (
           <NoHabitsFound />
         ) : null}
       </div>

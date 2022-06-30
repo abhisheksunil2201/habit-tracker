@@ -19,8 +19,7 @@
   height: 95%;
 }
 .home__pomodoro,
-.home__googleFit,
-.home__stats {
+.home__googleFit {
   background-color: #294261;
   margin: 1rem 0;
   font-size: 36px;
@@ -28,12 +27,11 @@
   padding: 1rem;
   cursor: pointer;
 }
-.home__pomodoro,
-.home__googleFit {
+.home__pomodoro {
   flex: 0.3;
 }
-.home__stats {
-  flex: 0.7;
+.home__googleFit {
+  flex: 0.4;
 }
 .home__pomodoro {
   background-repeat: no-repeat;

@@ -7,8 +7,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { InputLabel, MenuItem, Select } from "@mui/material";
 import { addDays } from "date-fns";
+import { useData } from "../../contexts/dataContext";
 
-export const AddHabitModal = ({ open, setOpen, habits, addHabit }) => {
+export const AddHabitModal = ({ open, setOpen, type, id }) => {
+  const { addHabit, editHabit } = useData();
   const [habit, setHabit] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -26,6 +28,12 @@ export const AddHabitModal = ({ open, setOpen, habits, addHabit }) => {
   const handleAddHabit = () => {
     const newHabit = { habit, startDate, endDate, goal, frequency };
     addHabit(newHabit);
+    handleClose();
+  };
+
+  const handleEditHabit = () => {
+    const habitToBeEdited = { habit, startDate, endDate, goal, frequency };
+    editHabit(habitToBeEdited);
     handleClose();
   };
 
@@ -144,6 +152,7 @@ export const AddHabitModal = ({ open, setOpen, habits, addHabit }) => {
             onChange={(e) => setFrequency(e.target.value)}
             menuItems={[
               { value: "daily", title: "Daily" },
+              { value: "alternate", title: "Alternate days" },
               { value: "weekly", title: "Weekly" },
               { value: "monthly", title: "Monthly" },
             ]}
@@ -151,7 +160,7 @@ export const AddHabitModal = ({ open, setOpen, habits, addHabit }) => {
 
           <button
             className={styles.addHabitModal__button}
-            onClick={handleAddHabit}
+            onClick={type === "edit" ? handleEditHabit : handleAddHabit}
           >
             Add habit
           </button>

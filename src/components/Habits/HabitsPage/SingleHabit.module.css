@@ -17,11 +17,12 @@
   margin: 0.5rem;
   color: lightgray;
 }
-.singleHabit__delete {
+.singleHabit__iconContainer {
   position: absolute;
   right: 1rem;
+  display: flex;
 }
-.singleHabit__deleteIcon {
+.singleHabit__icon {
   cursor: pointer !important;
   font-size: 2.5rem !important;
   margin-left: 1rem;

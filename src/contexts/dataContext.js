@@ -16,7 +16,12 @@ const DataProvider = ({ children }) => {
   const [coins, setCoins] = useState(0);
   const [quotes, setQuotes] = useState([]);
   const [habits, setHabits] = useState([]);
-  const [completedHabits, setCompletedHabits] = useState([]);
+  const [streak, setStreak] = useState({
+    currentStreak: 0,
+    longestStreak: 0,
+    lastUpdated: null,
+  });
+  const [deletedHabits, setDeletedHabits] = useState([]);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -33,7 +38,7 @@ const DataProvider = ({ children }) => {
     async function getCoins() {
       try {
         const coinsCol = doc(db, `coins/${user?.user.uid}`);
-        const coins = await (await getDoc(coinsCol)).data();
+        const coins = (await getDoc(coinsCol)).data();
         return coins.coins;
       } catch (error) {
         console.log(error);
@@ -46,21 +51,28 @@ const DataProvider = ({ children }) => {
   const getHabits = async () => {
     const habitsCol = doc(db, `habits/${user?.user.uid}`);
     const habits = (await getDoc(habitsCol)).data();
-    if (habits?.habits.length) setHabits(habits.habits);
+    if (habits?.habits.length) {
+      const unresolvedHabitsWithProgress = habits.habits.map(async (habit) => {
+        const progress = await getTodayProgress(habit.id);
+        return {
+          ...habit,
+          progress: progress,
+        };
+      });
+      const resolvedHabitsWithProgress = await Promise.all(
+        unresolvedHabitsWithProgress
+      );
+      setHabits(resolvedHabitsWithProgress);
+    }
     return [];
   };
 
-  const getCompletedHabits = async () => {
-    const habitsCol = doc(db, `completedHabits/${user?.user.uid}`);
+  const getDeletedHabits = async () => {
+    const habitsCol = doc(db, `deletedHabits/${user?.user.uid}`);
     const habits = (await getDoc(habitsCol)).data();
-    if (habits?.habits.length) setCompletedHabits(habits.habits);
+    if (habits?.habits.length) setDeletedHabits(habits.habits);
     return [];
   };
-
-  useEffect(() => {
-    getHabits();
-    getCompletedHabits();
-  }, [user]);
 
   const addHabit = async ({ habit, startDate, endDate, goal, frequency }) => {
     await setDoc(doc(db, "habits", user?.user.uid), {
@@ -79,8 +91,48 @@ const DataProvider = ({ children }) => {
     getHabits();
   };
 
+  const editHabit = async (habitToBeEdited) => {
+    const newHabits = habits.map((habit) => {
+      if (habit.id === habitToBeEdited.id) {
+        return habitToBeEdited;
+      }
+    });
+    console.log(newHabits);
+    // await setDoc(
+    //   doc(
+    //     db,
+    //     `habitProgress/${user?.user.uid}}`
+    //   ),
+    //   {
+    //     habits: [...habits,]
+    //   }
+    // );
+  };
+
+  const getStreakDetails = async () => {
+    const streakCol = doc(db, `streak/${user?.user.uid}`);
+    const streakDetails = (await getDoc(streakCol)).data();
+    streakDetails &&
+      setStreak({
+        currentStreak: streakDetails.currentStreak,
+        longestStreak: streakDetails.longestStreak,
+        lastUpdated: streakDetails.lastUpdated,
+      });
+  };
+
+  const updateStreak = async () => {
+    const longestStreak =
+      streak.currentStreak > streak.longestStreak
+        ? streak.currentStreak
+        : streak.longestStreak;
+    await setDoc(doc(db, `streak/${user?.user.uid}`), {
+      currentStreak: streak.currentStreak + 1,
+      longestStreak: longestStreak,
+      lastUpdated: new Date(new Date().setHours(0, 0, 0, 0)).getTime(),
+    });
+  };
+
   const habitCompletedOnce = async (id, currentProgress) => {
-    console.log(id, currentProgress);
     await setDoc(
       doc(
         db,
@@ -102,19 +154,19 @@ const DataProvider = ({ children }) => {
       ).getTime()}/${id}`
     );
     const progress = (await getDoc(todayProgress)).data();
-    return progress?.progress;
+    return progress?.progress || 0;
   };
 
   const deleteHabit = async (habitToBeDeleted) => {
     await setDoc(doc(db, "habits", user?.user.uid), {
       habits: habits.filter((habit) => habit.id !== habitToBeDeleted.id),
     });
-    addToCompletedHabits(habitToBeDeleted);
+    addToDeletedHabits(habitToBeDeleted);
     getHabits();
-    getCompletedHabits();
+    getDeletedHabits();
   };
 
-  const addToCompletedHabits = async ({
+  const addToDeletedHabits = async ({
     id,
     habit,
     startDate,
@@ -122,9 +174,9 @@ const DataProvider = ({ children }) => {
     goal,
     frequency,
   }) => {
-    await setDoc(doc(db, "completedHabits", user?.user.uid), {
+    await setDoc(doc(db, "deletedHabits", user?.user.uid), {
       habits: [
-        ...completedHabits,
+        ...deletedHabits,
         {
           id,
           habit,
@@ -136,8 +188,14 @@ const DataProvider = ({ children }) => {
       ],
     });
     await getHabits();
-    await getCompletedHabits();
+    await getDeletedHabits();
   };
+
+  useEffect(() => {
+    getHabits();
+    getDeletedHabits();
+    getStreakDetails();
+  }, [user]);
 
   return (
     <DataContext.Provider
@@ -147,12 +205,15 @@ const DataProvider = ({ children }) => {
         quotes,
         habits,
         setHabits,
-        completedHabits,
-        setCompletedHabits,
+        deletedHabits,
+        setDeletedHabits,
         addHabit,
         deleteHabit,
         habitCompletedOnce,
         getTodayProgress,
+        updateStreak,
+        streak,
+        editHabit,
       }}
     >
       {children}

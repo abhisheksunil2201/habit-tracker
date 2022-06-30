@@ -5,6 +5,7 @@ import styles from "./Home.module.css";
 import googleFitIcon from "../../assets/google-fit.svg";
 import stopwatchIcon from "../../assets/stopwatch.svg";
 import { useNavigate } from "react-router-dom";
+import { Stats } from "../../components/Stats/Stats";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -25,10 +26,11 @@ export const Home = () => {
         <Quotes />
       </div>
       <div className={styles.home__right}>
-        <div className={styles.home__stats}>
-          <p>Stats</p>
-        </div>
-        <div className={styles.home__googleFit}>
+        <Stats />
+        <div
+          className={styles.home__googleFit}
+          onClick={() => navigate("/gfit")}
+        >
           <img
             className={styles.googleFitIcon}
             src={googleFitIcon}

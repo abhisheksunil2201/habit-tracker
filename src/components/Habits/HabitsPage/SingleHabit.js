@@ -1,15 +1,16 @@
 import { format } from "date-fns";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SingleHabit.module.css";
-import { Delete } from "@mui/icons-material";
-import { useData } from "../../contexts/dataContext";
+import { Delete, Edit } from "@mui/icons-material";
+import { useData } from "../../../contexts/dataContext";
+import { AddHabitModal } from "../../Modal/AddHabitModal";
 
 export const SingleHabit = ({ habit, type }) => {
-  const { deleteHabit } = useData();
+  const { deleteHabit, getTodayProgress } = useData();
+  const [open, setOpen] = useState(false);
 
   const getDate = (timestamp) => {
     const date = new Date(timestamp.seconds * 1000);
-
     return format(date, "MMM dd, yyyy");
   };
 
@@ -21,6 +22,10 @@ export const SingleHabit = ({ habit, type }) => {
     ) {
       deleteHabit(habit);
     }
+  };
+
+  const handleEdit = () => {
+    setOpen(true);
   };
 
   return (
@@ -41,15 +46,29 @@ export const SingleHabit = ({ habit, type }) => {
         <p className={styles.singleHabit__endDate}>
           End date : {getDate(habit.endDate)}
         </p>
+        {type !== "deleted" && (
+          <p className={styles.singleHabit__endDate}>
+            Today's progess : {habit.progress}/{habit.goal}
+          </p>
+        )}
       </div>
-      {type !== "completed" && (
-        <p className={styles.singleHabit__delete}>
-          <Delete
-            onClick={() => handleDelete(habit)}
-            className={styles.singleHabit__deleteIcon}
-          />
-        </p>
+      {type !== "deleted" && (
+        <div className={styles.singleHabit__iconContainer}>
+          <div>
+            <Edit
+              onClick={() => handleEdit(habit)}
+              className={styles.singleHabit__icon}
+            />
+          </div>
+          <div>
+            <Delete
+              onClick={() => handleDelete(habit)}
+              className={styles.singleHabit__icon}
+            />
+          </div>
+        </div>
       )}
+      <AddHabitModal open={open} setOpen={setOpen} type="edit" id={habit.id} />
     </div>
   );
 };

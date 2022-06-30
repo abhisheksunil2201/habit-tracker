@@ -13,7 +13,7 @@ export const Habits = () => {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { habits, addHabit } = useData();
+  const { habits } = useData();
 
   const handleAddHabit = () => {
     if (user) {
@@ -53,12 +53,7 @@ export const Habits = () => {
             habits.map((habit) => <SingleHabit key={uuid()} habit={habit} />)}
         </div>
       </div>
-      <AddHabitModal
-        open={open}
-        setOpen={setOpen}
-        habits={habits}
-        addHabit={addHabit}
-      />
+      <AddHabitModal open={open} setOpen={setOpen} />
     </div>
   );
 };

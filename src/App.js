@@ -5,6 +5,7 @@ import { Pomodoro } from "./pages/Pomodoro/Pomodoro";
 import { Home } from "./pages/Home/Home";
 import { Login } from "./pages/Login/Login";
 import { Habits } from "./pages/Habits/Habits";
+import { GoogleFit } from "./pages/GoogleFit/GoogleFit";
 
 function App() {
   const location = useLocation();
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/pomodoro" element={<Pomodoro />} />
         <Route path="/habits" element={<Habits />} />
+        <Route path="/gfit" element={<GoogleFit />} />
       </Routes>
     </div>
   );

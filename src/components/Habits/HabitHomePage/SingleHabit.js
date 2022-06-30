@@ -4,12 +4,21 @@ import styles from "./Habits.module.css";
 import { useData } from "../../../contexts/dataContext";
 
 export const SingleHabit = ({ habit }) => {
-  const { habitCompletedOnce, getTodayProgress } = useData();
+  const { habitCompletedOnce, getTodayProgress, streak, updateStreak } =
+    useData();
   const [progress, setProgress] = useState(0);
 
   const handleHabitComplete = (id, currentProgress) => {
     if (currentProgress < habit.goal) {
       habitCompletedOnce(id, currentProgress);
+      if (currentProgress + 1 === habit.goal) {
+        if (
+          streak.lastUpdated !==
+          new Date(new Date().setHours(0, 0, 0, 0)).getTime()
+        ) {
+          updateStreak();
+        }
+      }
       getProgress();
     }
   };
