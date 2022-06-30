@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const provider = new GoogleAuthProvider();
+  provider.addScope("https://www.googleapis.com/auth/fitness.activity.read");
+
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
@@ -19,6 +21,7 @@ export const Login = () => {
       .then((result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
+        console.log(credential);
         const user = result.user;
         localStorage.setItem("user", JSON.stringify({ user, token }));
         setUser({ user, token });

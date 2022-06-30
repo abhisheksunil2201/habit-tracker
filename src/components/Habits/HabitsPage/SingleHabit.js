@@ -1,12 +1,12 @@
 import { format } from "date-fns";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./SingleHabit.module.css";
 import { Delete, Edit } from "@mui/icons-material";
 import { useData } from "../../../contexts/dataContext";
 import { AddHabitModal } from "../../Modal/AddHabitModal";
 
 export const SingleHabit = ({ habit, type }) => {
-  const { deleteHabit, getTodayProgress } = useData();
+  const { deleteHabit } = useData();
   const [open, setOpen] = useState(false);
 
   const getDate = (timestamp) => {
