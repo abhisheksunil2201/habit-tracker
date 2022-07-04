@@ -9,20 +9,28 @@ import { InputLabel, MenuItem, Select } from "@mui/material";
 import { addDays } from "date-fns";
 import { useData } from "../../contexts/dataContext";
 
-export const AddHabitModal = ({ open, setOpen, type, id }) => {
+export const AddHabitModal = ({ open, setOpen, type, habit: habitInDB }) => {
   const { addHabit, editHabit } = useData();
-  const [habit, setHabit] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [goal, setGoal] = useState(1);
-  const [frequency, setFrequency] = useState("daily");
+  const [habit, setHabit] = useState(habitInDB?.habit || "");
+  const [startDate, setStartDate] = useState(
+    habitInDB ? new Date(habitInDB?.startDate.seconds * 1000) : new Date()
+  );
+  const [endDate, setEndDate] = useState(
+    habitInDB ? new Date(habitInDB?.endDate.seconds * 1000) : new Date()
+  );
+  const [goal, setGoal] = useState(habitInDB?.goal || 1);
+  const [frequency, setFrequency] = useState(habitInDB?.frequency || "daily");
 
   const handleClose = () => {
-    setHabit("");
-    setStartDate(new Date());
-    setEndDate(new Date());
-    setGoal(1);
-    setFrequency("daily");
+    setHabit(habitInDB?.habit || "");
+    setStartDate(
+      habitInDB ? new Date(habitInDB?.startDate.seconds * 1000) : new Date()
+    );
+    setEndDate(
+      habitInDB ? new Date(habitInDB?.endDate.seconds * 1000) : new Date()
+    );
+    setGoal(habitInDB?.goal || 1);
+    setFrequency(habitInDB?.frequency || "daily");
     setOpen(false);
   };
   const handleAddHabit = () => {
@@ -32,7 +40,14 @@ export const AddHabitModal = ({ open, setOpen, type, id }) => {
   };
 
   const handleEditHabit = () => {
-    const habitToBeEdited = { habit, startDate, endDate, goal, frequency };
+    const habitToBeEdited = {
+      habit,
+      startDate,
+      endDate,
+      goal,
+      frequency,
+      id: habitInDB?.id,
+    };
     editHabit(habitToBeEdited);
     handleClose();
   };
@@ -107,7 +122,9 @@ export const AddHabitModal = ({ open, setOpen, type, id }) => {
     >
       <Fade in={open}>
         <div className={styles.addHabitModal}>
-          <p className={styles.addHabitModal__heading}>Add a Habit</p>
+          <p className={styles.addHabitModal__heading}>
+            {type === "edit" ? "Edit habit" : "Add a Habit"}
+          </p>
           <input
             type="text"
             className={styles.addHabitModal__input}
@@ -117,6 +134,7 @@ export const AddHabitModal = ({ open, setOpen, type, id }) => {
           />
           <DatePicker
             selected={startDate}
+            value={startDate}
             dateFormat="dd/MM/yyyy"
             onChange={(date) => setStartDate(date)}
             placeholder="Start Date"
@@ -126,6 +144,7 @@ export const AddHabitModal = ({ open, setOpen, type, id }) => {
           />
           <DatePicker
             selected={endDate}
+            value={endDate}
             dateFormat="dd/MM/yyyy"
             onChange={(date) => setEndDate(date)}
             placeholder="End Date"
@@ -162,7 +181,7 @@ export const AddHabitModal = ({ open, setOpen, type, id }) => {
             className={styles.addHabitModal__button}
             onClick={type === "edit" ? handleEditHabit : handleAddHabit}
           >
-            Add habit
+            {type === "edit" ? "Edit habit" : "Add habit"}
           </button>
         </div>
       </Fade>

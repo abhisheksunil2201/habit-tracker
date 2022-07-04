@@ -68,7 +68,13 @@ export const SingleHabit = ({ habit, type }) => {
           </div>
         </div>
       )}
-      <AddHabitModal open={open} setOpen={setOpen} type="edit" id={habit.id} />
+      <AddHabitModal
+        open={open}
+        setOpen={setOpen}
+        type="edit"
+        id={habit.id}
+        habit={habit}
+      />
     </div>
   );
 };

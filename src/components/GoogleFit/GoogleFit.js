@@ -1,42 +1,63 @@
-import { addDays } from "date-fns";
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../../contexts/userContext";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import styles from "./GoogleFit.module.css";
+import { fetchStepData } from "../../utils/functions";
+import { useNavigate } from "react-router-dom";
+import { useData } from "../../contexts/dataContext";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+export const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+      align: "end",
+    },
+    title: {
+      display: true,
+      text: "Steps( Last 7 days )",
+    },
+  },
+  maintainAspectRatio: false,
+};
 
 export const GoogleFit = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
+  const { resetData } = useData();
+  const navigate = useNavigate();
+  const [data, setData] = React.useState({ labels: [], datasets: [] });
 
-  const fetchData = async () => {
-    const headers = new Headers();
-    headers.append("Content-Type", "text/plain");
-    headers.append("Authorization", `Bearer ${user?.token}`);
-    console.log(headers.get("Authorization"));
-
-    const requestOptions = {
-      method: "post",
-      mode: "cors",
-      headers: headers,
-      aggregateBy: [
-        {
-          dataTypeName: "com.google.step_count.delta",
-          dataSourceId:
-            "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps",
-        },
-      ],
-      bucketByTime: { durationMillis: 86400000 },
-      startTimeMillis: new Date(new Date().setHours(0, 0, 0, 0)).getTime(),
-      endTimeMillis: new Date(
-        addDays(new Date(), 1).setHours(0, 0, 0, 0)
-      ).getTime(),
-    };
-
-    const data = await fetch(
-      "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
-      {
-        requestOptions,
-      }
-    );
-    console.log(data);
-  };
-  user?.token && fetchData();
-  return <div>GoogleFit</div>;
+  useEffect(() => {
+    user?.token && fetchStepData(user, setData, setUser, navigate, resetData);
+  }, [user]);
+  return (
+    <div className={styles.googleFit}>
+      <h1 className={styles.googleFit__title}>Google Fit Tracker</h1>
+      {user ? (
+        <div className={styles.chart__container}>
+          <Bar options={options} data={data} />
+        </div>
+      ) : (
+        <h3>Login to track Google Fit data</h3>
+      )}
+    </div>
+  );
 };

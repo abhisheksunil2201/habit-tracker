@@ -4,16 +4,20 @@ import styles from "./HabitsPage.module.css";
 import { SingleHabit } from "./SingleHabit";
 
 export const HabitsPage = () => {
-  const { habits, deletedHabits } = useData();
+  const {
+    habits,
+    deletedHabits,
+    activeHabits,
+    completedHabits,
+    setActiveHabits,
+    setCompletedHabits,
+  } = useData();
   const [activeTab, setActiveTab] = useState("active");
-  const [activeHabits, setActiveHabits] = useState([]);
-  const [completedHabits, setCompletedHabits] = useState([]);
 
   useEffect(() => {
-    console.log(habits);
     setActiveHabits(habits.filter((habit) => habit.progress !== habit.goal));
     setCompletedHabits(habits.filter((habit) => habit.progress === habit.goal));
-  }, []);
+  }, [habits]);
 
   const NoHabitsFound = () => (
     <p className={styles.NoHabitsFound}>No habits found</p>

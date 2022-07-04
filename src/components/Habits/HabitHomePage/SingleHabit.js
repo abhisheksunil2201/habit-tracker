@@ -2,10 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Check } from "@mui/icons-material";
 import styles from "./Habits.module.css";
 import { useData } from "../../../contexts/dataContext";
+import { sortHabits } from "../../../utils/functions";
 
 export const SingleHabit = ({ habit }) => {
-  const { habitCompletedOnce, getTodayProgress, streak, updateStreak } =
-    useData();
+  const {
+    habits,
+    setHabits,
+    habitCompletedOnce,
+    getTodayProgress,
+    streak,
+    updateStreak,
+    setActiveHabits,
+    setCompletedHabits,
+  } = useData();
   const [progress, setProgress] = useState(0);
 
   const handleHabitComplete = (id, currentProgress) => {
@@ -20,6 +29,9 @@ export const SingleHabit = ({ habit }) => {
         }
       }
       getProgress();
+      sortHabits(habits, setActiveHabits, setCompletedHabits);
+      const newHabits = habits.filter((habit) => habit.id !== id);
+      setHabits([...newHabits, { ...habit, progress: currentProgress + 1 }]);
     }
   };
 

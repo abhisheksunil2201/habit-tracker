@@ -22,6 +22,8 @@ const DataProvider = ({ children }) => {
     lastUpdated: null,
   });
   const [deletedHabits, setDeletedHabits] = useState([]);
+  const [activeHabits, setActiveHabits] = useState([]);
+  const [completedHabits, setCompletedHabits] = useState([]);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -39,6 +41,12 @@ const DataProvider = ({ children }) => {
       try {
         const coinsCol = doc(db, `coins/${user?.user.uid}`);
         const coins = (await getDoc(coinsCol)).data();
+        if (!coins) {
+          setDoc(doc(db, `coins/${user?.user.uid}`), {
+            coins: 0,
+          });
+          return 0;
+        }
         return coins.coins;
       } catch (error) {
         console.log(error);
@@ -96,17 +104,12 @@ const DataProvider = ({ children }) => {
       if (habit.id === habitToBeEdited.id) {
         return habitToBeEdited;
       }
+      return habit;
     });
-    console.log(newHabits);
-    // await setDoc(
-    //   doc(
-    //     db,
-    //     `habitProgress/${user?.user.uid}}`
-    //   ),
-    //   {
-    //     habits: [...habits,]
-    //   }
-    // );
+    await setDoc(doc(db, "habits", user?.user.uid), {
+      habits: newHabits,
+    });
+    getHabits();
   };
 
   const getStreakDetails = async () => {
@@ -126,6 +129,11 @@ const DataProvider = ({ children }) => {
         ? streak.currentStreak
         : streak.longestStreak;
     await setDoc(doc(db, `streak/${user?.user.uid}`), {
+      currentStreak: streak.currentStreak + 1,
+      longestStreak: longestStreak,
+      lastUpdated: new Date(new Date().setHours(0, 0, 0, 0)).getTime(),
+    });
+    setStreak({
       currentStreak: streak.currentStreak + 1,
       longestStreak: longestStreak,
       lastUpdated: new Date(new Date().setHours(0, 0, 0, 0)).getTime(),
@@ -191,6 +199,16 @@ const DataProvider = ({ children }) => {
     await getDeletedHabits();
   };
 
+  const resetData = () => {
+    setCoins(0);
+    setHabits([]);
+    setStreak({
+      currentStreak: 0,
+      longestStreak: 0,
+      lastUpdated: null,
+    });
+  };
+
   useEffect(() => {
     getHabits();
     getDeletedHabits();
@@ -214,6 +232,11 @@ const DataProvider = ({ children }) => {
         updateStreak,
         streak,
         editHabit,
+        resetData,
+        activeHabits,
+        setActiveHabits,
+        completedHabits,
+        setCompletedHabits,
       }}
     >
       {children}

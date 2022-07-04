@@ -1,0 +1,18 @@
+.googleFit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.googleFit__title {
+  font-size: 4rem;
+  font-weight: 300;
+}
+.chart__container {
+  width: 70%;
+  height: 22rem !important;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  margin: 3rem 1rem;
+}

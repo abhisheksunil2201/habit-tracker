@@ -38,6 +38,13 @@
   cursor: pointer;
   margin-right: 0.5rem;
 }
+.navbar__userIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  border-radius: 50%;
+}
 .navbar__logIcon {
   cursor: pointer !important;
   font-size: 2rem !important;

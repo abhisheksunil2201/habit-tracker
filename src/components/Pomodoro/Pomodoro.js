@@ -97,7 +97,6 @@ export const Pomodoro = () => {
   const formatTime = (time) => {
     return dayjs.duration(time, "seconds").format("mm:ss");
   };
-  console.log(progress);
   return (
     <div className={styles.pomodoro}>
       <LinearProgress
