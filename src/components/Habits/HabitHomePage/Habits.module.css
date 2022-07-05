@@ -63,3 +63,12 @@
   font-size: 1.2rem;
   font-weight: 400;
 }
+
+@media (max-width: 840px) {
+  .habitsList {
+    height: 70%;
+  }
+  .habit__info {
+    margin-top: 35%;
+  }
+}

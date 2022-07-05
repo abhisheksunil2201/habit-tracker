@@ -39,7 +39,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  object-fit: cover;
   font-size: 48px;
+  background-size: cover;
 }
 .home__googleFit {
   display: flex;
@@ -49,4 +51,22 @@
   width: 120px;
   height: 120px;
   margin-right: 0.5rem;
+}
+@media (max-width: 840px) {
+  .home {
+    flex-direction: column;
+    overflow-y: scroll;
+  }
+  .home::-webkit-scrollbar {
+    display: none;
+  }
+  .home__left {
+    margin: 1rem 0 0.5rem 0;
+  }
+  .home__pomodoro {
+    margin: 0;
+  }
+  .home__googleFit {
+    margin-bottom: 2rem;
+  }
 }

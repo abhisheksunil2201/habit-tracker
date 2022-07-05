@@ -56,7 +56,18 @@ export const GoogleFit = () => {
           <Bar options={options} data={data} />
         </div>
       ) : (
-        <h3>Login to track Google Fit data</h3>
+        <p className={styles.googleFit__loginDialog}>
+          Please{" "}
+          <span
+            className={
+              styles.googleFit__loginLink + " hover_underline_animation"
+            }
+            onClick={() => navigate("/login")}
+          >
+            login
+          </span>{" "}
+          to track Google Fit data
+        </p>
       )}
     </div>
   );

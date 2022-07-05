@@ -16,3 +16,13 @@
   border-radius: 8px;
   margin: 3rem 1rem;
 }
+.googleFit__loginDialog {
+  font-weight: 300;
+  font-size: 2rem;
+  color: white;
+  margin-top: 1rem;
+}
+.googleFit__loginLink {
+  color: #ff6683;
+  cursor: pointer;
+}
