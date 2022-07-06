@@ -1,70 +1,54 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Habitica (A habit tracker)
+Habitica is a habit tracker built for users to track their habit progress, form new habits and improve their lives for good. It is very easy to get started with, and it gives you a sense of achievement daily by rewarding you everytime you complete a habit. 
 
-## Available Scripts
+Link - https://habittracker.vercel.app/
+## Features
 
-In the project directory, you can run:
+- Easily **create new habits, edit and delete habits**
+- A **simple dashboard** with access to all features in a single click
+- A **pomodoro timer** which will help you manage your time and focus on your daily tasks
+- A new **quote everyday**, for all those who get motivation from them
+- View your stats, like your **daily streak**, and get them the highest you can to earn gold which can be redeemed in a future update
+- Track your **Google Fit** data from the dashboard easily, so that you can take care of your physical health too. ***Because it's important!***
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech Stack
 
-### `npm test`
+**Frontend:** 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React
+- Material UI
+- date-fns
+- react-chartjs-2
+- react-datepicker
 
-### `npm run build`
+**Backend:** 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Firebase
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Screenshots
 
-### `npm run eject`
+- Dashboard
+![Screenshot 2022-07-06 at 11 24 32 PM](https://user-images.githubusercontent.com/52904509/177620739-732105d0-2892-4356-941a-d19664107c3d.png)
+- Habits Screen
+![Screenshot 2022-07-06 at 11 29 46 PM](https://user-images.githubusercontent.com/52904509/177620726-427c92c8-b391-4d24-9844-d660c1f515a4.png)
+- Pomodoro Screen
+![Screenshot 2022-07-06 at 11 30 09 PM](https://user-images.githubusercontent.com/52904509/177620746-4911cec5-500c-46e8-880f-4d8ba8453a25.png)
+- Google Fit Tracker Screen
+![Screenshot 2022-07-06 at 11 30 41 PM](https://user-images.githubusercontent.com/52904509/177620774-b529d14c-358b-4e06-b3d2-0a86174228e2.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Roadmap
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- A store from which user can purchase in app items like themes, with the gold earned
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Add more Google Fit data like sleep, food, etc..
 
-## Learn More
+- Add a detailed stats screen with more information
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![Group 3](https://user-images.githubusercontent.com/52904509/177624066-d430bf2d-e501-4b42-a43c-4e6812a1e4e2.png)
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
