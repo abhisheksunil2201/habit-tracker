@@ -50,11 +50,19 @@ export const GoogleFit = () => {
   }, [user]);
   return (
     <div className={styles.googleFit}>
+      {console.log(data)}
       <h1 className={styles.googleFit__title}>Google Fit Tracker</h1>
       {user ? (
-        <div className={styles.chart__container}>
-          <Bar options={options} data={data} />
-        </div>
+        data?.datasets[0]?.data ? (
+          <div className={styles.chart__container}>
+            <Bar options={options} data={data} />
+          </div>
+        ) : (
+          <p className={styles.googleFit__noData}>
+            No data is available. Please sync your data with Google Fit and try
+            again later.
+          </p>
+        )
       ) : (
         <p className={styles.googleFit__loginDialog}>
           Please{" "}

@@ -26,3 +26,9 @@
   color: #ff6683;
   cursor: pointer;
 }
+.googleFit__noData {
+  font-size: 2rem;
+  font-weight: 300;
+  color: rgb(188, 84, 84);
+  margin-top: 5rem;
+}

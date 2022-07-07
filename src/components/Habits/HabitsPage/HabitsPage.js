@@ -15,8 +15,8 @@ export const HabitsPage = () => {
   const [activeTab, setActiveTab] = useState("active");
 
   useEffect(() => {
-    setActiveHabits(habits.filter((habit) => habit.progress !== habit.goal));
-    setCompletedHabits(habits.filter((habit) => habit.progress === habit.goal));
+    setActiveHabits(habits.filter((habit) => habit.progress < habit.goal));
+    setCompletedHabits(habits.filter((habit) => habit.progress >= habit.goal));
   }, [habits]);
 
   const NoHabitsFound = () => (

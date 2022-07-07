@@ -114,11 +114,11 @@ export const fetchStepData = async (
       steps: item?.dataset[0]?.point[0]?.value[0]?.intVal,
     }));
     setData({
-      labels: modifiedData.map((item) => item.date),
+      labels: modifiedData?.map((item) => item.date),
       datasets: [
         {
           label: "Steps",
-          data: modifiedData.map((item) => item.steps),
+          data: modifiedData?.map((item) => item.steps),
           backgroundColor: "#294261",
         },
       ],
