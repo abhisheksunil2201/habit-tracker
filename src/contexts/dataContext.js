@@ -199,6 +199,17 @@ const DataProvider = ({ children }) => {
     await getDeletedHabits();
   };
 
+  async function addCoins(coinsToBeAdded) {
+    try {
+      setDoc(doc(db, `coins/${user?.user.uid}`), {
+        coins: coins + coinsToBeAdded,
+      });
+      setCoins(coins + coinsToBeAdded);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const resetData = () => {
     setCoins(0);
     setHabits([]);
@@ -237,6 +248,7 @@ const DataProvider = ({ children }) => {
         setActiveHabits,
         completedHabits,
         setCompletedHabits,
+        addCoins,
       }}
     >
       {children}

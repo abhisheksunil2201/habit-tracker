@@ -14,6 +14,7 @@ export const SingleHabit = ({ habit }) => {
     updateStreak,
     setActiveHabits,
     setCompletedHabits,
+    addCoins,
   } = useData();
   const [progress, setProgress] = useState(0);
 
@@ -27,6 +28,7 @@ export const SingleHabit = ({ habit }) => {
         ) {
           updateStreak();
         }
+        addCoins(1);
       }
       getProgress();
       sortHabits(habits, setActiveHabits, setCompletedHabits);
